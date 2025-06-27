@@ -39,6 +39,7 @@ if __name__ == "__main__":
         autopilot.set_preferred_board(BoardDetector.detect_sitl())
     try:
         loop.run_until_complete(autopilot.start_ardupilot())
+        autopilot.kill_ardupilot()
     except Exception as start_error:
         logger.exception(start_error)
     loop.create_task(autopilot.auto_restart_ardupilot())
