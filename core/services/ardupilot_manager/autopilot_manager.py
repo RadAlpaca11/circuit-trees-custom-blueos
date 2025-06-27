@@ -594,8 +594,14 @@ class AutoPilotManager(metaclass=Singleton):
                 await self.start_manual_board(flight_controller)
             else:
                 raise RuntimeError(f"Invalid board type: {flight_controller}")
+        except Exception as error:
+            logger.error(f"Failed to start Ardupilot: {error}")
+
+        try:
+            logger.info("Killing fucking Ardupilot!")
+            await self.kill_ardupilot()
         finally:
-            self.should_be_running = True
+            self.should_be_running = False
 
     async def restart_ardupilot(self) -> None:
         if self.current_board is None or self.current_board.type in [PlatformType.SITL, PlatformType.Linux]:
